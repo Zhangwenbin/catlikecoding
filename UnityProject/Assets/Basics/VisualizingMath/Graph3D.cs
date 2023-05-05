@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Graph : MonoBehaviour
+public class Graph3D : MonoBehaviour
 {
     [SerializeField]
     Transform pointPrefab;
@@ -10,7 +10,7 @@ public class Graph : MonoBehaviour
     [SerializeField, Range(10, 100)]
     int resolution = 10;
 
-    public FunctionLibrary.FunctionName FunctionName;
+    public FunctionLibrary3D.FunctionName FunctionName;
 
     private Transform[] points;
     private float step ;
@@ -20,12 +20,9 @@ public class Graph : MonoBehaviour
         step = 2f / resolution;
         var position = Vector3.zero;
         var scale = Vector3.one * step;
-        points = new Transform[resolution];
-        for (int i = 0; i < resolution; i++) {
+        points = new Transform[resolution*resolution];
+        for (int i = 0; i < resolution*resolution; i++) {
             Transform point = Instantiate(pointPrefab);
-            position.x = (i + 0.5f) * step - 1f;
-            position.y = 0;
-            point.localPosition = position;
             point.localScale = scale;
             point.SetParent(transform,false);
             points[i] = point;
@@ -36,12 +33,20 @@ public class Graph : MonoBehaviour
     void Update()
     {
         float time = Time.time;
-        var f = FunctionLibrary.GetFunction(FunctionName);
-        for (int i = 0; i < resolution; i++) {
+        var f = FunctionLibrary3D.GetFunction(FunctionName);
+        float v = 0.5f * step - 1f;
+        for (int i = 0,x=0,z=0; i < resolution*resolution; i++,x++) {
+            if (x==resolution)
+            {
+                x = 0;
+                z++;
+                v = (z+0.5f) * step - 1f;
+            }
             Transform point = points[i];
-            var position = point.localPosition;
-            position.y =f(position.x,time);
-            point.localPosition = position;
+           
+            float u = (x + 0.5f) * step - 1f;
+            point.GetComponent<Point>().SetUV(u,v);
+            point.localPosition =f(u,v,time);
         }
     }
 }
