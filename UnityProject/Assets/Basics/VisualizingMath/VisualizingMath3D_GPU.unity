@@ -324,15 +324,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 951979130}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce0f187485a6b10498c820c738d1a265, type: 3}
+  m_Script: {fileID: 11500000, guid: 0f07f61e6c44d19429eb7fe0a7957a31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pointPrefab: {fileID: 2454944387586171366, guid: ddfa70128f4a00b4696377961d325b96, type: 3}
-  resolution: 200
+  resolution: 10
   function: 0
   functionDuration: 1
   transitionDuration: 1
   transitionMode: 0
+  positionComputeShader: {fileID: 7200000, guid: 49039b838d9fa764eb1da2d817f3f95c, type: 3}
 --- !u!1 &1814933314
 GameObject:
   m_ObjectHideFlags: 0

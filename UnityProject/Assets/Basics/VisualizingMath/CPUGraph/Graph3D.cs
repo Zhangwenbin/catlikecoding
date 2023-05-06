@@ -7,7 +7,7 @@ public class Graph3D : MonoBehaviour
     [SerializeField]
     Transform pointPrefab;
     
-    [SerializeField, Range(10, 100)]
+    [SerializeField, Range(10, 200)]
     int resolution = 10;
 
     public FunctionName function;
@@ -30,7 +30,6 @@ public class Graph3D : MonoBehaviour
     void Start()
     {
         step = 2f / resolution;
-        var position = Vector3.zero;
         var scale = Vector3.one * step;
         points = new Transform[resolution*resolution];
         for (int i = 0; i < resolution*resolution; i++) {
