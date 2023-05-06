@@ -10,7 +10,7 @@ public class FunctionLibrary3D
         Wave,
         MultiWave,
         Ripple,
-        Sphere,
+        //Sphere,
 
         // Spherewithverticalbands,
         //  Spherewithhorizantalbands,
@@ -22,7 +22,7 @@ public class FunctionLibrary3D
 
     public delegate Vector3 Function(float u, float v, float t);
 
-    private static Function[] functions = { Wave, MultiWave, Ripple, Sphere, Rotatingtwistedsphere, Twistingtorus };
+    private static Function[] functions = { Wave, MultiWave, Ripple, Rotatingtwistedsphere, Twistingtorus };
 
     public static Function GetFunction(FunctionName name)
     {
@@ -34,6 +34,7 @@ public class FunctionLibrary3D
         return (int)name < functions.Length - 1 ? name + 1 : 0;
     }
 
+    public static int FunctionCount => functions.Length;
     public static FunctionName GetRandomFunctionNameOtherThan(FunctionName name)
     {
         var choice = (FunctionName)Random.Range(1, functions.Length);
