@@ -261,7 +261,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pointPrefab: {fileID: 2454944387586171366, guid: ddfa70128f4a00b4696377961d325b96, type: 3}
   resolution: 55
-  FunctionName: 4
+  FunctionName: 8
 --- !u!1 &1814933314
 GameObject:
   m_ObjectHideFlags: 0
