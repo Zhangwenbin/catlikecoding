@@ -6,7 +6,7 @@ using FunctionName=FunctionLibrary3D.FunctionName;
 public class GPUGraph : MonoBehaviour
 {
 
-    [SerializeField, Range(10, 200)]
+    [SerializeField, Range(10, 1000)]
     int resolution = 10;
 
     public FunctionName function;
@@ -44,8 +44,6 @@ public class GPUGraph : MonoBehaviour
         timeId = Shader.PropertyToID("_Time");
     private void OnEnable()
     {
-        material.SetBuffer(positionsId, positionComputeBuffer);
-        material.SetFloat(stepId, step);
         positionComputeBuffer = new ComputeBuffer(resolution*resolution,3*4);
     }
 
@@ -83,14 +81,16 @@ public class GPUGraph : MonoBehaviour
     }
 
     void UpdateFunctionOnGPU () {
+        
         float step = 2f / resolution;
         positionComputeShader.SetInt(resolutionId, resolution);
         positionComputeShader.SetFloat(stepId, step);
         positionComputeShader.SetFloat(timeId, Time.time);
         positionComputeShader.SetBuffer(0, positionsId, positionComputeBuffer);
-        
         int groups = Mathf.CeilToInt(resolution / 8f);
         positionComputeShader.Dispatch(0, groups, groups, 1);
+        
+        
         var bounds = new Bounds(Vector3.zero, Vector3.one * (2f + 2f / resolution));
         material.SetBuffer(positionsId, positionComputeBuffer);
         material.SetFloat(stepId, step);
