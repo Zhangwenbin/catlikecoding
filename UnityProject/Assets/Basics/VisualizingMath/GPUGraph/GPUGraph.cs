@@ -5,8 +5,8 @@ using UnityEngine;
 using FunctionName=FunctionLibrary3D.FunctionName;
 public class GPUGraph : MonoBehaviour
 {
-
-    [SerializeField, Range(10, 1000)]
+    const int maxResolution = 1000;
+    [SerializeField, Range(10, maxResolution)]
     int resolution = 10;
 
     public FunctionName function;
@@ -44,7 +44,7 @@ public class GPUGraph : MonoBehaviour
         timeId = Shader.PropertyToID("_Time");
     private void OnEnable()
     {
-        positionComputeBuffer = new ComputeBuffer(resolution*resolution,3*4);
+        positionComputeBuffer = new ComputeBuffer(maxResolution*maxResolution,3*4);
     }
 
     private void OnDisable()
@@ -94,6 +94,6 @@ public class GPUGraph : MonoBehaviour
         var bounds = new Bounds(Vector3.zero, Vector3.one * (2f + 2f / resolution));
         material.SetBuffer(positionsId, positionComputeBuffer);
         material.SetFloat(stepId, step);
-        Graphics.DrawMeshInstancedProcedural(mesh, 0, material,bounds,positionComputeBuffer.count);
+        Graphics.DrawMeshInstancedProcedural(mesh, 0, material,bounds,resolution*resolution);
     }
 }
