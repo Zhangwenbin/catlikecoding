@@ -100,7 +100,7 @@ public class Fractal : MonoBehaviour
             }
         }
         
-        var bounds = new Bounds(Vector3.zero, 3f * Vector3.one);
+        var bounds = new Bounds(rootPart.worldPosition, 3f*objectScale* Vector3.one);
         for (int i = 0; i < matricesBuffers.Length; i++) {
             ComputeBuffer buffer = matricesBuffers[i];
             buffer.SetData(matrices[i]);
