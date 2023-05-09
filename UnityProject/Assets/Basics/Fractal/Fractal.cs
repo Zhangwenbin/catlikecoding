@@ -129,7 +129,7 @@ public class Fractal : MonoBehaviour
         }
     }
     
-    [BurstCompile(CompileSynchronously = true)]
+    [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
     struct UpdateFractalLevelJob : IJobFor 
     {
         public float spinAngleDelta;
