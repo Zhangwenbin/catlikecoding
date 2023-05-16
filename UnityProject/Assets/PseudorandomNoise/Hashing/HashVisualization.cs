@@ -14,9 +14,30 @@ public class HashVisualization : MonoBehaviour
         [WriteOnly]
         public NativeArray<uint> hashes;
         
+        public int resolution;
+
+        public float invResolution;
+        
+        public SmallXXHash hash;
         public void Execute(int i) {
             //hashes[i] = (uint)i;
-            hashes[i] = (uint)(frac(i * 0.381f) * 256f);
+            
+           // hashes[i] = (uint)(frac(i * 0.381f) * 256f);
+           
+         //  float v = floor( i/resolution + 0.00001f);
+         
+            // float v = floor(invResolution * i + 0.00001f);
+            // float u = i - resolution * v;
+            // hashes[i] = (uint)(frac(u * v * 0.381f) * 255f);
+            
+            // int v = (int)floor(invResolution * i + 0.00001f);
+            // int u = i - resolution * v;
+            
+            int v = (int)floor(invResolution * i + 0.00001f);
+            int u = i - resolution * v - resolution / 2;
+            v -= resolution / 2;
+            
+            hashes[i] = hashes[i] = hash.Eat(u).Eat(v);
         }
     }
     
@@ -32,6 +53,12 @@ public class HashVisualization : MonoBehaviour
 
     [SerializeField, Range(1, 512)]
     int resolution = 16;
+    
+    [SerializeField]
+    int seed;
+    
+    [SerializeField, Range(-2f, 2f)]
+    float verticalOffset = 1f;
 
     NativeArray<uint> hashes;
 
@@ -45,14 +72,17 @@ public class HashVisualization : MonoBehaviour
         hashesBuffer = new ComputeBuffer(length, 4);
 
         new HashJob {
-            hashes = hashes
+            hashes = hashes,
+            resolution = resolution,
+            invResolution = 1f/resolution,
+            hash=SmallXXHash.Seed(seed)
         }.ScheduleParallel(hashes.Length, resolution, default).Complete();
 
         hashesBuffer.SetData(hashes);
 
         propertyBlock ??= new MaterialPropertyBlock();
         propertyBlock.SetBuffer(hashesId, hashesBuffer);
-        propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution));
+        propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution, verticalOffset / resolution));
     }
     
     void OnDisable () {
