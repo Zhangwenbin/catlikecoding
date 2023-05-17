@@ -89,6 +89,8 @@ public class HashSpaceVisualization : MonoBehaviour
     
     NativeArray<float3> positions, normals;
     bool isDirty;
+    
+    Bounds bounds;
     void OnEnable () {
         isDirty = true;
         int length = resolution * resolution;
@@ -129,7 +131,10 @@ public class HashSpaceVisualization : MonoBehaviour
         if (isDirty || transform.hasChanged) {
             isDirty = false;
             transform.hasChanged = false;
-
+            bounds = new Bounds(
+                transform.position,
+                float3(2f * cmax(abs(transform.lossyScale)) + displacement)
+            );
             JobHandle handle = Shapes.Job.ScheduleParallel(
                 positions,normals, resolution, transform.localToWorldMatrix, default
             );
@@ -147,7 +152,7 @@ public class HashSpaceVisualization : MonoBehaviour
         }
 
         Graphics.DrawMeshInstancedProcedural(
-            instanceMesh, 0, material, new Bounds(Vector3.zero, Vector3.one),
+            instanceMesh, 0, material, bounds,
             hashes.Length, propertyBlock
         );
     }
