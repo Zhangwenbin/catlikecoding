@@ -59,4 +59,23 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/PseudorandomNoise/Hashing/HashVisualization.cs</url>
+          <line>37</line>
+          <properties documentPath="E:\zwb\catlikecoding\UnityProject\Assets\PseudorandomNoise\Hashing\HashVisualization.cs" initialLine="37" containingFunctionPresentation="method 'Execute'">
+            <startOffsets>
+              <option value="1187" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1207" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
