@@ -55,6 +55,7 @@ public class HashSpaceVisualization : MonoBehaviour
     static int
         hashesId = Shader.PropertyToID("_Hashes"),
         positionsId = Shader.PropertyToID("_Positions"),
+        normalsId = Shader.PropertyToID("_Normals"),
         configId = Shader.PropertyToID("_Config");
 
     [SerializeField]
@@ -69,8 +70,11 @@ public class HashSpaceVisualization : MonoBehaviour
     [SerializeField]
     int seed;
     
-    [SerializeField, Range(-2f, 2f)]
-    float verticalOffset = 1f;
+    // [SerializeField, Range(-2f, 2f)]
+    // float verticalOffset = 1f;
+    
+    [SerializeField, Range(-0.5f, 0.5f)]
+    float displacement = 0.1f;
     
     [SerializeField]
     SpaceTRS domain = new SpaceTRS {
@@ -79,45 +83,39 @@ public class HashSpaceVisualization : MonoBehaviour
 
     NativeArray<uint> hashes;
 
-    ComputeBuffer hashesBuffer, positionsBuffer;
+    ComputeBuffer hashesBuffer, positionsBuffer, normalsBuffer;
 
     MaterialPropertyBlock propertyBlock;
     
-    NativeArray<float3> positions;
-    
+    NativeArray<float3> positions, normals;
+    bool isDirty;
     void OnEnable () {
+        isDirty = true;
         int length = resolution * resolution;
         hashes = new NativeArray<uint>(length, Allocator.Persistent);
         positions = new NativeArray<float3>(length, Allocator.Persistent);
         hashesBuffer = new ComputeBuffer(length, 4);
         positionsBuffer = new ComputeBuffer(length, 3 * 4);
-        
-        JobHandle handle = Shapes.Job.ScheduleParallel(positions, resolution,  transform.localToWorldMatrix,default);
-        new HashJob {
-            hashes = hashes,
-            positions = positions,
-            //resolution = resolution,
-            //invResolution = 1f/resolution,
-            hash=SmallXXHash.Seed(seed),
-            domainTRS = domain.Matrix
-        }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
-
-        hashesBuffer.SetData(hashes);
-        positionsBuffer.SetData(positions);
+        normals = new NativeArray<float3>(length, Allocator.Persistent);
+        normalsBuffer = new ComputeBuffer(length, 3 * 4);
         
         propertyBlock ??= new MaterialPropertyBlock();
         propertyBlock.SetBuffer(hashesId, hashesBuffer);
-        propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution, verticalOffset / resolution));
+        propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution,displacement));
         propertyBlock.SetBuffer(positionsId, positionsBuffer);
+        propertyBlock.SetBuffer(normalsId, normalsBuffer);
     }
     
     void OnDisable () {
         hashes.Dispose();
         positions.Dispose();
+        normals.Dispose();
         hashesBuffer.Release();
         positionsBuffer.Release();
+        normalsBuffer.Release();
         hashesBuffer = null;
         positionsBuffer = null;
+        normalsBuffer = null;
     }
 
     void OnValidate () {
@@ -128,6 +126,26 @@ public class HashSpaceVisualization : MonoBehaviour
     }
     
     void Update () {
+        if (isDirty || transform.hasChanged) {
+            isDirty = false;
+            transform.hasChanged = false;
+
+            JobHandle handle = Shapes.Job.ScheduleParallel(
+                positions,normals, resolution, transform.localToWorldMatrix, default
+            );
+
+            new HashJob {
+                positions = positions,
+                hashes = hashes,
+                hash = SmallXXHash.Seed(seed),
+                domainTRS = domain.Matrix
+            }.ScheduleParallel(hashes.Length, resolution, handle).Complete();
+
+            hashesBuffer.SetData(hashes);
+            positionsBuffer.SetData(positions);
+            normalsBuffer.SetData(normals);
+        }
+
         Graphics.DrawMeshInstancedProcedural(
             instanceMesh, 0, material, new Bounds(Vector3.zero, Vector3.one),
             hashes.Length, propertyBlock
