@@ -98,6 +98,19 @@ public class HashSpaceVisualization : MonoBehaviour
     bool isDirty;
     
     Bounds bounds;
+
+    public enum Shape { Plane, Sphere, Torus }
+
+    
+    [SerializeField]
+    Shape shape;
+    
+    static Shapes.ScheduleDelegate[] shapeJobs = {
+        Shapes.Job<Shapes.Plane>.ScheduleParallel,
+        Shapes.Job<Shapes.Sphere>.ScheduleParallel,
+        Shapes.Job<Shapes.Torus>.ScheduleParallel
+    };
+    
     void OnEnable () {
         isDirty = true;
         int length = resolution * resolution;
@@ -143,7 +156,7 @@ public class HashSpaceVisualization : MonoBehaviour
                 transform.position,
                 float3(2f * cmax(abs(transform.lossyScale)) + displacement)
             );
-            JobHandle handle = Shapes.Job<Shapes.Plane>.ScheduleParallel(
+            JobHandle handle =shapeJobs[(int)shape](
                 positions,normals, resolution, transform.localToWorldMatrix, default
             );
 

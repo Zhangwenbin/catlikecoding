@@ -7,6 +7,12 @@ using static Unity.Mathematics.math;
 
 public static class Shapes {
 
+    public delegate JobHandle ScheduleDelegate (
+        NativeArray<float3x4> positions, NativeArray<float3x4> normals,
+        int resolution, float4x4 trs, JobHandle dependency
+    );
+
+    
     [BurstCompile(FloatPrecision.Standard, FloatMode.Fast, CompileSynchronously = true)]
     public struct Job<S> : IJobFor where S : struct, IShape
     {
@@ -14,7 +20,7 @@ public static class Shapes {
         [WriteOnly]
         NativeArray<float3x4> positions, normals;
         
-        public float3x4 positionTRS;
+        public float3x4 positionTRS, normalTRS;
         
         public float resolution, invResolution;
         
@@ -44,7 +50,7 @@ public static class Shapes {
 
             positions[i] = transpose(TransformVectors(positionTRS, p.positions));
 
-            float3x4 n = transpose(TransformVectors(positionTRS, p.normals, 0f));
+            float3x4 n = transpose(TransformVectors(normalTRS, p.normals, 0f));
             normals[i] = float3x4(
                 normalize(n.c0), normalize(n.c1), normalize(n.c2), normalize(n.c3)
             );
@@ -53,12 +59,14 @@ public static class Shapes {
         public static JobHandle ScheduleParallel (
             NativeArray<float3x4> positions, NativeArray<float3x4> normals,int resolution, float4x4 trs, JobHandle dependency
         ) {
+            float4x4 tim = transpose(inverse(trs));
             return new Job<S> {
                 positions = positions,
                 normals = normals,
                 resolution = resolution,
                 invResolution = 1f / resolution,
-                positionTRS = float3x4(trs.c0.xyz, trs.c1.xyz, trs.c2.xyz, trs.c3.xyz)
+                positionTRS = float3x4(trs.c0.xyz, trs.c1.xyz, trs.c2.xyz, trs.c3.xyz),
+                normalTRS = float3x4(tim.c0.xyz, tim.c1.xyz, tim.c2.xyz, tim.c3.xyz)
             }.ScheduleParallel(positions.Length, resolution, dependency);
         }
     }
@@ -77,6 +85,43 @@ public static class Shapes {
         }
     }
     
+    	
+    public struct Sphere : IShape {
+
+        public Point4 GetPoint4 (int i, float resolution, float invResolution) {
+            float4x2 uv = IndexTo4UV(i, resolution, invResolution);
+
+            float r = 0.5f;
+            float4 s = r * sin(PI * uv.c1);
+
+            Point4 p;
+            p.positions.c0 = s * sin(2f * PI * uv.c0);
+            p.positions.c1 = r * cos(PI * uv.c1);
+            p.positions.c2 = s * cos(2f * PI * uv.c0);
+            p.normals = p.positions;
+            return p;
+        }
+    }
+    
+    public struct Torus : IShape {
+
+        public Point4 GetPoint4 (int i, float resolution, float invResolution) {
+            float4x2 uv = IndexTo4UV(i, resolution, invResolution);
+
+            float r1 = 0.375f;
+            float r2 = 0.125f;
+            float4 s = r1 + r2 * cos(2f * PI * uv.c1);
+
+            Point4 p;
+            p.positions.c0 = s * sin(2f * PI * uv.c0);
+            p.positions.c1 = r2 * sin(2f * PI * uv.c1);
+            p.positions.c2 = s * cos(2f * PI * uv.c0);
+            p.normals = p.positions;
+            p.normals.c0 -= r1 * sin(2f * PI * uv.c0);
+            p.normals.c2 -= r1 * cos(2f * PI * uv.c0);
+            return p;
+        }
+    }
     public struct Point4 {
         public float4x3 positions, normals;
     }
