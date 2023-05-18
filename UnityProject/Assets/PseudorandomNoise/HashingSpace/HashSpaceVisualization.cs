@@ -143,7 +143,7 @@ public class HashSpaceVisualization : MonoBehaviour
                 transform.position,
                 float3(2f * cmax(abs(transform.lossyScale)) + displacement)
             );
-            JobHandle handle = Shapes.Job.ScheduleParallel(
+            JobHandle handle = Shapes.Job<Shapes.Plane>.ScheduleParallel(
                 positions,normals, resolution, transform.localToWorldMatrix, default
             );
 
