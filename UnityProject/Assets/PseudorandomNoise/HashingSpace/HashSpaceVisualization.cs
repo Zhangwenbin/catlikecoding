@@ -112,6 +112,8 @@ public class HashSpaceVisualization : MonoBehaviour
         Shapes.Job<Shapes.OctahedronSphere>.ScheduleParallel
     };
     
+    [SerializeField, Range(0.1f, 10f)]
+    float instanceScale = 2f;
     void OnEnable () {
         isDirty = true;
         int length = resolution * resolution;
@@ -125,7 +127,7 @@ public class HashSpaceVisualization : MonoBehaviour
         
         propertyBlock ??= new MaterialPropertyBlock();
         propertyBlock.SetBuffer(hashesId, hashesBuffer);
-        propertyBlock.SetVector(configId, new Vector4(resolution, 1f / resolution,displacement));
+        propertyBlock.SetVector(configId, new Vector4(resolution, instanceScale / resolution,displacement));
         propertyBlock.SetBuffer(positionsId, positionsBuffer);
         propertyBlock.SetBuffer(normalsId, normalsBuffer);
     }
