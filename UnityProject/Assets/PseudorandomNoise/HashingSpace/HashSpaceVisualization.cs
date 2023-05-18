@@ -99,7 +99,7 @@ public class HashSpaceVisualization : MonoBehaviour
     
     Bounds bounds;
 
-    public enum Shape { Plane, Sphere, Torus }
+    public enum Shape { Plane, Sphere, Torus,OctahedronSphere }
 
     
     [SerializeField]
@@ -108,7 +108,8 @@ public class HashSpaceVisualization : MonoBehaviour
     static Shapes.ScheduleDelegate[] shapeJobs = {
         Shapes.Job<Shapes.Plane>.ScheduleParallel,
         Shapes.Job<Shapes.Sphere>.ScheduleParallel,
-        Shapes.Job<Shapes.Torus>.ScheduleParallel
+        Shapes.Job<Shapes.Torus>.ScheduleParallel,
+        Shapes.Job<Shapes.OctahedronSphere>.ScheduleParallel
     };
     
     void OnEnable () {
