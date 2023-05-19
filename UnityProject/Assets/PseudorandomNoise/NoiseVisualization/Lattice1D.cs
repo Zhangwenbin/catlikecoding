@@ -38,7 +38,8 @@ public static partial class Noise {
             span.p0 = (int4)points;
             span.p1 = span.p0 + 1;
             span.t = coordinates - points;
-            span.t = smoothstep(0f, 1f, span.t);
+          //  span.t = smoothstep(0f, 1f, span.t);//3tt-2ttt
+            span.t = span.t * span.t * span.t * (span.t * (span.t * 6f - 15f) + 10f);//6ttttt-15tttt+10ttt
             return span;
         }
     }
