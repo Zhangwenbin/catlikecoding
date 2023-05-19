@@ -19,7 +19,7 @@ public abstract class Visualization : MonoBehaviour
     [SerializeField]
     Material material;
 
-    [SerializeField, Range(1, 512)]
+    [SerializeField, Range(1, 256)]
     int resolution = 16;
     
     // [SerializeField, Range(-2f, 2f)]
