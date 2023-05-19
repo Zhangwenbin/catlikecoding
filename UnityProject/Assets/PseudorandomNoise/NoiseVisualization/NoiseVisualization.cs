@@ -25,9 +25,9 @@ public class NoiseVisualization : Visualization
     ComputeBuffer noiseBuffer;
     
     static ScheduleDelegate[] noiseJobs = {
-            Job<Lattice1D>.ScheduleParallel,
-            Job<Lattice2D>.ScheduleParallel,
-            Job<Lattice3D>.ScheduleParallel
+        Job<Lattice1D<Value>>.ScheduleParallel,
+        Job<Lattice2D<Value>>.ScheduleParallel,
+        Job<Lattice3D<Value>>.ScheduleParallel
         };
 
     [SerializeField, Range(1, 3)]
