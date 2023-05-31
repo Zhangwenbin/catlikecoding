@@ -100,5 +100,8 @@ public readonly struct SmallXXHash4
     
     public static implicit operator SmallXXHash4 (SmallXXHash hash) =>
         new SmallXXHash4(hash.accumulator);
+    
+    public static SmallXXHash4 operator + (SmallXXHash4 h, int v) =>
+        h.accumulator + (uint)v;
 
 }
