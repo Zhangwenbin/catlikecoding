@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using FunctionName=FunctionLibrary3D.FunctionName;
 public class GPUGraph : MonoBehaviour

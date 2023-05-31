@@ -335,6 +335,7 @@ MonoBehaviour:
   positionComputeShader: {fileID: 7200000, guid: 49039b838d9fa764eb1da2d817f3f95c, type: 3}
   material: {fileID: -876546973899608171, guid: 9588831cab6655d41b1ff4ba3ad3e522, type: 3}
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  meshText: {fileID: 0}
 --- !u!1 &1814933314
 GameObject:
   m_ObjectHideFlags: 0
