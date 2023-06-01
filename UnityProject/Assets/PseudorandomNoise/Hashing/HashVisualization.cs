@@ -37,7 +37,7 @@ public class HashVisualization : MonoBehaviour
             int u = i - resolution * v - resolution / 2;
             v -= resolution / 2;
             
-            hashes[i] = hashes[i] = hash.Eat(u).Eat(v);
+            hashes[i] = hash.Eat(u).Eat(v);
         }
     }
     
