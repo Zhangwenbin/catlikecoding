@@ -583,7 +583,7 @@ MonoBehaviour:
   instanceScale: 1
   noiseSettings:
     seed: 0
-    octaves: 1
+    octaves: 3
     frequency: 4
     lacunarity: 2
     persistence: 0.5
@@ -600,6 +600,6 @@ MonoBehaviour:
       x: 8
       y: 8
       z: 8
-  dimensions: 2
+  dimensions: 3
   type: 4
   tiling: 0
