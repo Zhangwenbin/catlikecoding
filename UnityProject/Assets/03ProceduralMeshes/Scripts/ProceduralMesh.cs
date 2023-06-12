@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 public class ProceduralMesh : MonoBehaviour
 {
     Mesh mesh;
-    [SerializeField, Range(1, 10)]
+    [SerializeField, Range(1, 100)]
     int resolution = 1;
     
     static MeshJobScheduleDelegate[] jobs = {

@@ -250,7 +250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c833b123aa119b46a4882fd66528d24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resolution: 1
+  resolution: 55
   meshType: 1
 --- !u!23 &1317325154
 MeshRenderer:
@@ -272,7 +272,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 34a6e31e5b5a50f40b41ae2522c21385, type: 2}
+  - {fileID: 2100000, guid: 7a38b3e1afcd7664f986d2c460952ada, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
