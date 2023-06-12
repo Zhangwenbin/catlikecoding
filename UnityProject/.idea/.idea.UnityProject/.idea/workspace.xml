@@ -9,6 +9,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7a65553d79014583966c44fc20d04f6f14a418/ba/f8843b51/NativeArray`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/03ProceduralMeshes/Generators/SharedTriangleGrid.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/2f43737330164f04a8fbb3c39233cf0f16e400/bd/37bf4d4c/Vector3.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/03ProceduralMeshes/Generators/SharedSquareGrid.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7a65553d79014583966c44fc20d04f6f14a418/1a/c39b1612/Transform.cs" root0="SKIP_HIGHLIGHTING" />
