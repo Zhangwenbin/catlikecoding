@@ -5,7 +5,7 @@ using static Unity.Mathematics.math;
 namespace ProceduralMeshes.Generators
 {
     
-    public struct PointyHexagonGrid : IMeshGenerator
+    public struct FlatHexagonGrid : IMeshGenerator
     {
         public int VertexCount =>7* (Resolution) * (Resolution);
 
@@ -13,9 +13,9 @@ namespace ProceduralMeshes.Generators
 
         public int JobLength => Resolution + 1 ;
         public Bounds Bounds => new Bounds(Vector3.zero, new Vector3(
-            (Resolution > 1 ? 0.5f + 0.25f / Resolution : 0.5f) * sqrt(3f),
+            0.75f + 0.25f / Resolution,
             0f,
-            0.75f + 0.25f / Resolution
+            (Resolution > 1 ? 0.5f + 0.25f / Resolution : 0.5f) * sqrt(3f)
         ));
 
         public int Resolution { get; set; }
